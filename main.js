@@ -1,12 +1,27 @@
-function getComputerChoice() {
-    let rps = ["Rock","Paper","Scissors"]
-    let choice = Math.floor(Math.random() * rps.length)
-    return rps[choice];
+function game(rounds) {
+
+    let majorityWin = Math.floor(rounds / 2 + 1);
+   for (let i = 0, wincount = 0, losecount = 0; i < rounds; i++) {
+
+    let playerSelection = getPlayerChoice();
+    let computerSelection = getComputerChoice();
+
+    console.log(playRound(playerSelection, computerSelection));
+
+    switch(gameTable(playerSelection, computerSelection)) {
+        case "Win":
+            wincount++
+            break;
+        case "Lose":
+            losecount++
+    }
+    
+    if (wincount === majorityWin) return "You won the game!";
+    else if (losecount === majorityWin) return "You lost the game!"
+   }
 }
 
 function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.substr(0,1).toUpperCase() +
-    playerSelection.substr(1,playerSelection.length-1).toLowerCase();
 
     let roundResult = gameTable(playerSelection, computerSelection);
     let roundOutcome = gameDeclaration(roundResult, playerSelection, computerSelection);
@@ -14,8 +29,26 @@ function playRound(playerSelection, computerSelection) {
     return roundOutcome;    
 }
 
-function game() {
-    return 0;
+function getPlayerChoice() {
+    let choice;
+    while(true) {
+        choice = prompt("Play Rock, Paper, or Scissors.");
+        choice = choice.substr(0,1).toUpperCase() +
+        choice.substr(1).toLowerCase();
+
+        switch(choice) {
+            case "Rock":
+            case "Paper":
+            case "Scissors":
+                return choice;
+        }
+    }
+}
+
+function getComputerChoice() {
+    let rps = ["Rock","Paper","Scissors"]
+    let choice = Math.floor(Math.random() * rps.length)
+    return rps[choice];
 }
 
 function gameTable(player, computer) {
@@ -44,3 +77,5 @@ function gameDeclaration(gameResult, player, computer) {
     roundOutcome = `You ${gameResult}! ${declaration}.`;
     return roundOutcome;
 }
+
+console.log(game(5))
