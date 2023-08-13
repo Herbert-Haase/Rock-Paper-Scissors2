@@ -35,12 +35,12 @@ function gameDeclaration(gameResult, player, computer) {
     let declaration;
     if (gameResult === "Win") {
         declaration = `${player} beats ${computer}`; 
-    } else if (gameResult === "Loose") {
+    } else if (gameResult === "Lose") {
         declaration = `${computer} beats ${player}`;
     } else {
         declaration = `${player} ties with ${computer}`;
     }
 
-    roundOutcome = `You ${gameResult}! ${gameDeclaration}.`;
+    roundOutcome = `You ${gameResult}! ${declaration}.`;
     return roundOutcome;
 }
