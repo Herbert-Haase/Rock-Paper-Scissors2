@@ -1,81 +1,84 @@
-function game(rounds) {
+function game(roundnumbers) {
+  let wincount = 0;
+  let losecount = 0;
+  let display = document.querySelector(".display");
 
-    let majorityWin = Math.floor(rounds / 2 + 1);
-   for (let i = 0, wincount = 0, losecount = 0; i < rounds; i++) {
+  return (playRound) => {
+    display.innerHTML += `<p>${playRound.roundOutcome}<p>`;
 
-    let playerSelection = getPlayerChoice();
-    let computerSelection = getComputerChoice();
+    switch (playRound.roundResult) {
+      case "Win":
+        wincount++;
+        break;
+      case "Lose":
+        losecount++;
 
-    console.log(playRound(playerSelection, computerSelection));
-
-    switch(gameTable(playerSelection, computerSelection)) {
-        case "Win":
-            wincount++
-            break;
-        case "Lose":
-            losecount++
-    }
-    
-    if (wincount === majorityWin) return "You won the game!";
-    else if (losecount === majorityWin) return "You lost the game!"
-   }
-}
-
-function playRound(playerSelection, computerSelection) {
-
-    let roundResult = gameTable(playerSelection, computerSelection);
-    let roundOutcome = gameDeclaration(roundResult, playerSelection, computerSelection);
-
-    return roundOutcome;    
-}
-
-function getPlayerChoice() {
-    let choice;
-    while(true) {
-        choice = prompt("Play Rock, Paper, or Scissors.");
-        choice = choice.substr(0,1).toUpperCase() +
-        choice.substr(1).toLowerCase();
-
-        switch(choice) {
-            case "Rock":
-            case "Paper":
-            case "Scissors":
-                return choice;
+        if (wincount === roundnumbers) {
+          display.innerHTML += "<p>Winner, Winner, Chickendinner!<p>";
+          display = null;
+        } else if (losecount === roundnumbers) {
+          display.innerHTML += "<p>Lost! Better luck next time.<p>";
+          display = null;
         }
     }
+  };
 }
 
+let playAGame = game(5);
+
+function playRound(playerSelection, computerSelection) {
+  let roundResult = gameTable(playerSelection, computerSelection);
+  let roundOutcome = gameDeclaration(
+    roundResult,
+    playerSelection,
+    computerSelection
+  );
+  return {
+    roundResult,
+    roundOutcome,
+  };
+}
+
+(function getPlayerChoice() {
+  let buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      let playedRound;
+      playedRound = playRound(e.target.className, getComputerChoice());
+      playAGame(playedRound);
+    });
+  });
+})();
+
 function getComputerChoice() {
-    let rps = ["Rock","Paper","Scissors"]
-    let choice = Math.floor(Math.random() * rps.length)
-    return rps[choice];
+  let rps = ["Rock", "Paper", "Scissors"];
+  let choice = Math.floor(Math.random() * rps.length);
+  return rps[choice];
 }
 
 function gameTable(player, computer) {
+  let gameTable = {
+    Rock: { Rock: "Tie", Paper: "Lose", Scissors: "Win" },
+    Paper: { Rock: "Win", Paper: "Tie", Scissors: "Lose" },
+    Scissors: { Rock: "Lose", Paper: "Win", Scissors: "Tie" },
+  };
 
-    let gameTable = {
-        "Rock": {"Rock":"Tie","Paper":"Lose","Scissors":"Win"},
-        "Paper": {"Rock":"Win","Paper":"Tie","Scissors":"Lose"},
-        "Scissors": {"Rock":"Lose","Paper":"Win","Scissors":"Tie"}
-    }
-        
-    let roundResult = gameTable[player][computer]
-    return roundResult;
+  let roundResult = gameTable[player][computer];
+  return roundResult;
 }
 
 function gameDeclaration(gameResult, player, computer) {
+  let declaration;
+  if (gameResult === "Win") {
+    declaration = `${player} beats ${computer}`;
+  } else if (gameResult === "Lose") {
+    declaration = `${computer} beats ${player}`;
+  } else {
+    declaration = `${player} ties with ${computer}`;
+  }
 
-    let declaration;
-    if (gameResult === "Win") {
-        declaration = `${player} beats ${computer}`; 
-    } else if (gameResult === "Lose") {
-        declaration = `${computer} beats ${player}`;
-    } else {
-        declaration = `${player} ties with ${computer}`;
-    }
-
-    roundOutcome = `You ${gameResult}! ${declaration}.`;
-    return roundOutcome;
+  roundOutcome = `You ${gameResult}! ${declaration}.`;
+  return roundOutcome;
 }
 
-console.log(game(5))
+// console.log(game(5));
