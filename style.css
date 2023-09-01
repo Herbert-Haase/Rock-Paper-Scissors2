@@ -1,0 +1,56 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.buttons > button {
+  padding: 40px;
+  margin: 0 10px;
+  background-color: black;
+  color: white;
+  font-weight: 900;
+  font-size: 25px;
+  border: none;
+  border-radius: 10px;
+}
+
+.buttons > button:hover {
+  transform: scale(1.1);
+}
+
+.buttons > button:active {
+  transform: scale(1);
+}
+
+.display {
+  padding: 10px;
+  height: 100px; /* Set a fixed or minimum height for the container */
+  overflow: hidden;
+}
+
+.display,
+.display p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#win,
+#lose {
+  align-items: stretch;
+  min-height: 400px;
+  height: 80%;
+  width: 30%;
+  text-align: center;
+
+  font-size: 30px;
+  font-weight: 900;
+}

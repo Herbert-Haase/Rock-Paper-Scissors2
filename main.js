@@ -2,16 +2,20 @@ function game(roundnumbers) {
   let wincount = 0;
   let losecount = 0;
   let display = document.querySelector(".display");
+  let lose = document.querySelector("#lose>p");
+  let win = document.querySelector("#win>p");
 
   return (playRound) => {
-    display.innerHTML += `<p>${playRound.roundOutcome}<p>`;
+    display.textContent = playRound.roundOutcome;
 
     switch (playRound.roundResult) {
       case "Win":
         wincount++;
+        win.textContent = "\n" + wincount;
         break;
       case "Lose":
         losecount++;
+        lose.textContent = "\n" + losecount;
 
         if (wincount === roundnumbers) {
           display.innerHTML += "<p>Winner, Winner, Chickendinner!<p>";
@@ -80,5 +84,3 @@ function gameDeclaration(gameResult, player, computer) {
   roundOutcome = `You ${gameResult}! ${declaration}.`;
   return roundOutcome;
 }
-
-// console.log(game(5));
